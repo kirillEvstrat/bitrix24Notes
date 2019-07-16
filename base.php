@@ -1,5 +1,15 @@
+<?
+function writeToLog($data) {
+        $log = "\n------------------------\n";
+        $log .= print_r($data, 1);
+        $log .= "\n------------------------\n";
+        file_put_contents($_SERVER["DOCUMENT_ROOT"]."/log228.txt", $log, FILE_APPEND);
+}
+
+
 // отправка уведомлений в колокольчик
- private function sendNotify($title, $message, $userIdTo, $userIdFrom){
+\CModule::IncludeModule('im');
+function sendNotify($title, $message, $userIdTo, $userIdFrom){
         \CIMMessenger::Add(array(
             'TITLE' => $title,
             'MESSAGE' => $message,
@@ -10,3 +20,19 @@
             'NOTIFY_TYPE' => 2,  # 1 - confirm, 2 - notify single from, 4 - notify single
         ));
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+?>
