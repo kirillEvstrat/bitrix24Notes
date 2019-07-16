@@ -7,13 +7,29 @@ function writeToLog($data) {
 }
 ///CRM start////////////////
 //////////////////////
+////////////////////
 $deal =  \CCrmDeal::GetListEx([],["ID"=>intval($dealId), "CHECK_PERMISSIONS"=>"N"],false,false,  ["*", "UF_*"])->Fetch();
+/// обновление счета
+$fields = array(
+             'UF_CRM_1562855359' => $title,
+             'UF_CRM_1562855373' => $date,
+
+         );
+
+         try {
+             $res = $CCrmInvoice->Update($invoiceId, $fields);
+         } catch (Main\DB\SqlQueryException $e) {
+             self::writeToLog($e);
+         }
 //получить значение списка
        $res = \CUserFieldEnum::GetList([], ["ID" => $elID]);
         if(intval($res->SelectedRowsCount())>0) {
             $answer = $res->Fetch()['VALUE'];
         }
+/////////////////////////////
 //////// CRM end ////////////
+//////////////////////////////
+
 
 // отправка уведомлений в колокольчик
 \CModule::IncludeModule('im');
