@@ -5,7 +5,15 @@ function writeToLog($data) {
         $log .= "\n------------------------\n";
         file_put_contents($_SERVER["DOCUMENT_ROOT"]."/log228.txt", $log, FILE_APPEND);
 }
-
+///CRM start////////////////
+//////////////////////
+$deal =  \CCrmDeal::GetListEx([],["ID"=>intval($dealId), "CHECK_PERMISSIONS"=>"N"],false,false,  ["*", "UF_*"])->Fetch();
+//получить значение списка
+       $res = \CUserFieldEnum::GetList([], ["ID" => $elID]);
+        if(intval($res->SelectedRowsCount())>0) {
+            $answer = $res->Fetch()['VALUE'];
+        }
+//////// CRM end ////////////
 
 // отправка уведомлений в колокольчик
 \CModule::IncludeModule('im');
