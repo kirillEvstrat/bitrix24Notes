@@ -9,6 +9,7 @@ function writeToLog($data) {
 
 // отправка уведомлений в колокольчик
 \CModule::IncludeModule('im');
+\CModule::IncludeModule("intranet");
 function sendNotify($title, $message, $userIdTo, $userIdFrom){
         \CIMMessenger::Add(array(
             'TITLE' => $title,
@@ -21,7 +22,48 @@ function sendNotify($title, $message, $userIdTo, $userIdFrom){
         ));
     }
 
+// авторизация, изменение групп 
 
+$user = new  CUser;
+$fields = ['PASSWORD'=>$pass1, 'CONFIRM_PASSWORD'=>$pass2];
+$user -> update($_POST['USER_ID'], $fields, false);
+//$arAuthResult = $user->Login($_POST["USER_LOGIN"], $pass1);
+$user->Authorize($_POST['USER_ID'], false);
+$arGroups = \CUser::GetUserGroup(intval($_POST["USER_ID"]));
+$arGroups[] = intval(12);
+\CUser::SetUserGroup(intval($_POST['USER_ID']), $arGroups);
+
+// ДОБАВЛЕНИЕ елемента инфоблока
+\CModule::IncludeModule("iblock");
+
+        $el = new \CIBlockElement;
+        $PROP = array();
+        $PROP[164] = $arFields['ID'];
+        $PROP[165] = $arFields['UF_DEAL_ID'];
+        $arLoadProductArray = Array(
+            "MODIFIED_BY"    => $USER->GetID(), // элемент изменен текущим пользователем
+            "IBLOCK_SECTION_ID" => false,          // элемент лежит в корне раздела
+            "IBLOCK_ID"      => 39,
+            "PROPERTY_VALUES"=> $PROP,
+            "NAME"           => "счет",
+            "ACTIVE"         => "Y",            // активен
+        );
+        $idOfEl = $el->Add($arLoadProductArray);
+        
+//запуск бп
+\Bitrix\Main\Loader::includeModule('bizproc');
+
+        $arErrorsTmp = array();
+        $wfId = \CBPDocument::StartWorkflow(
+            115,
+            [ 'lists', 'Bitrix\Lists\BizprocDocumentLists' , $idOfEl ],
+            [],
+            $arErrorsTmp
+        );
+//узнать парметры для запуска бп (запускать в самом бп)
+$rootActivity = $this->GetRootActivity();
+$documentId = $rootActivity->GetDocumentId();
+$rootActivity->SetVariable("test", print_r($documentId,true));       
 
 
 
