@@ -9,6 +9,8 @@ function writeToLog($data) {
 //////////////////////
 ////////////////////
 $deal =  \CCrmDeal::GetListEx([],["ID"=>intval($dealId), "CHECK_PERMISSIONS"=>"N"],false,false,  ["*", "UF_*"])->Fetch();
+//направления сделки
+ $arResult['CATEGORIES'] = \Bitrix\Crm\Category\DealCategory::getAll(true); 
 /// обновление счета
 $fields = array(
              'UF_CRM_1562855359' => $title,
