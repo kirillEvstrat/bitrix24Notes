@@ -5,6 +5,8 @@ function writeToLog($data) {
         $log .= "\n------------------------\n";
         file_put_contents($_SERVER["DOCUMENT_ROOT"]."/log228.txt", $log, FILE_APPEND);
 }
+if ($ex = $APPLICATION->GetException())
+               echo $ex->GetString();
 ///CRM start////////////////
 //////////////////////
 ////////////////////
