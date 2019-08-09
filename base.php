@@ -50,6 +50,37 @@ function sendNotify($title, $message, $userIdTo, $userIdFrom){
         ));
     }
 
+// сообщения в живую ленту //
+CModule::IncludeModule("blog");
+CModule::IncludeModule("socialnetwork");
+       $arBlog = CBlog::GetByOwnerID(1);
+       $arFields= array(
+           "TITLE" => "Заголовок",
+           "DETAIL_TEXT" => "Описание",
+           "DATE_PUBLISH" => date('d.m.Y H:i:s'),
+           "PUBLISH_STATUS" => "P",
+           "CATEGORY_ID" => "",
+           "PATH" => "/company/personal/user/1/blog/#post_id#/",
+           "URL" => "admin-blog-s1",
+           "PERMS_POST" => Array("12" => "WC"),
+           "PERMS_COMMENT" => Array (),
+           "SOCNET_RIGHTS" => Array
+           (
+
+           ),
+           "=DATE_CREATE" => "now()",
+           "AUTHOR_ID" => "1",
+           "BLOG_ID" => $arBlog['ID'],
+       );
+       $newID= CBlogPost::Add($arFields);
+       $arFields["ID"] = $newID;
+       $arParamsNotify = Array(
+           "bSoNet" => true,
+           "UserID" => "1",
+           "user_id" => "1",
+       );
+       $a = CBlogPost::Notify($arFields, array(), $arParamsNotify);
+
 // авторизация, изменение групп 
 
 $user = new  CUser;
