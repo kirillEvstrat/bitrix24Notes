@@ -124,9 +124,48 @@ $rootActivity = $this->GetRootActivity();
 $documentId = $rootActivity->GetDocumentId();
 $rootActivity->SetVariable("test", print_r($documentId,true));       
 
+//////Highload-блоками////////
+////////////////////////////
+//Подготовка:
+if (CModule::IncludeModule('highloadblock')) {
+   $arHLBlock = Bitrix\Highloadblock\HighloadBlockTable::getById(1)->fetch();
+   $obEntity = Bitrix\Highloadblock\HighloadBlockTable::compileEntity($arHLBlock);
+   $strEntityDataClass = $obEntity->getDataClass();
+}
 
+//Добавление:
+if (CModule::IncludeModule('highloadblock')) {
+   $arElementFields = array(
+      'UF_NAME' => $arPost['name'],
+      'UF_MESSAGE' => $arPost['message'],
+      'UF_DATETIME' => new \Bitrix\Main\Type\DateTime
+   );
+   $obResult = $strEntityDataClass::add($arElementFields);
+   $ID = $obResult->getID();
+   $bSuccess = $obResult->isSuccess();
+}
 
-
+//Получение списка:
+if (CModule::IncludeModule('highloadblock')) {
+   $rsData = $strEntityDataClass::getList(array(
+      'select' => array('ID','UF_NAME','UF_MESSAGE','UF_DATETIME'),
+      'order' => array('ID' => 'ASC'),
+      'limit' => '50',
+   ));
+   while ($arItem = $rsData->Fetch()) {
+      $arItems[] = $arItem;
+   }
+}
+Выбор случайного значения:
+$q = new Entity\Query($entity);
+       $q->setSelect(array('*'));
+       $q->setFilter($arFilter);
+       $q->setLimit(1);
+       $q->registerRuntimeField(
+           'RAND', array('data_type' => 'float', 'expression' => array('RAND()'))
+       );
+       $q->addOrder("RAND", "ASC");
+       $result = $q->exec();
 
 
 
