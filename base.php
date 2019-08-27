@@ -10,6 +10,7 @@ if ($ex = $APPLICATION->GetException())
 ///CRM start////////////////
 //////////////////////
 ////////////////////
+//Класс ContactCompanyTable
 $deal =  \CCrmDeal::GetListEx([],["ID"=>intval($dealId), "CHECK_PERMISSIONS"=>"N"],false,false,  ["*", "UF_*"])->Fetch();
 //направления сделки
  $arResult['CATEGORIES'] = \Bitrix\Crm\Category\DealCategory::getAll(true); 
