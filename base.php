@@ -167,13 +167,8 @@ $q = new Entity\Query($entity);
        );
        $q->addOrder("RAND", "ASC");
        $result = $q->exec();
-
-
-
-
-
-
-
-
-
 ?>
+
+
+///////посмотреть компонент user.selector
+bitrix/components/bitrix/report.view/templates/.default/template.php
