@@ -84,6 +84,8 @@ CModule::IncludeModule("socialnetwork");
 
 // авторизация, изменение групп 
 
+$users = CUser::GetList($by="ID", $order="desc", Array('UF_DEPARTMENT'=>"90", "ACTIVE"=>"Y"), ['CHECK_PERMISSOINS' => 'N', 'SELECT' => ['*', "UF_*"]]);
+
 $user = new  CUser;
 $fields = ['PASSWORD'=>$pass1, 'CONFIRM_PASSWORD'=>$pass2];
 $user -> update($_POST['USER_ID'], $fields, false);
