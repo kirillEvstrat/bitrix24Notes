@@ -212,7 +212,9 @@ $obExport = new \CIBlockCMLExport;
         ];
         $fp = fopen($fileDir.$fileName.".xml", "ab");
         if($obExport->Init($fp, $NS["IBLOCK_ID"], $NS["next_step"], true, $fileDir, $fileName))
-        {
+        {  
+                //$_SESSION["BX_CML2_EXPORT"] у меня пустой 
+                //$fileName = (new \DateTime())->format("d_m_Y__h_i_s"); $fileDir = $_SERVER['DOCUMENT_ROOT']."/upload/disk/";
             $obExport->StartExport();
             $obExport->StartExportMetadata();
             $obExport->ExportProperties($_SESSION["BX_CML2_EXPORT"]["PROPERTY_MAP"]);
