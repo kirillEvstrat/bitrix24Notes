@@ -201,3 +201,40 @@ bitrix/components/bitrix/report.view/templates/.default/template.php
                 'UPDATE_TIME' => null,
             ), array(), true);
 }
+///// экспорт инфоблока в xml
+$obExport = new \CIBlockCMLExport;
+
+        $NS = [
+            "IBLOCK_ID" => $IBlockID,
+            "STEP" =>1,
+            "SECTIONS_FILTER"=> "active",
+            "ELEMENTS_FILTER"=>"active",
+        ];
+        $fp = fopen($fileDir.$fileName.".xml", "ab");
+        if($obExport->Init($fp, $NS["IBLOCK_ID"], $NS["next_step"], true, $fileDir, $fileName))
+        {
+            $obExport->StartExport();
+            $obExport->StartExportMetadata();
+            $obExport->ExportProperties($_SESSION["BX_CML2_EXPORT"]["PROPERTY_MAP"]);
+            $result = $obExport->ExportSections(
+                $_SESSION["BX_CML2_EXPORT"]["SECTION_MAP"],
+                $start_time,
+                $INTERVAL,
+                $NS["SECTIONS_FILTER"],
+                $_SESSION["BX_CML2_EXPORT"]["PROPERTY_MAP"]
+            );
+            $obExport->EndExportMetadata();
+            $obExport->StartExportCatalog();
+            $result = $obExport->ExportElements(
+                $_SESSION["BX_CML2_EXPORT"]["PROPERTY_MAP"],
+                $_SESSION["BX_CML2_EXPORT"]["SECTION_MAP"],
+                $start_time,
+                $INTERVAL,
+                0,
+                $NS["ELEMENTS_FILTER"]
+            );
+            $obExport->EndExportCatalog();
+            $obExport->ExportProductSets();
+            $obExport->EndExport();
+            return true;
+        }
