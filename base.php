@@ -169,8 +169,35 @@ $q = new Entity\Query($entity);
        );
        $q->addOrder("RAND", "ASC");
        $result = $q->exec();
-?>
+
 
 
 ///////посмотреть компонент user.selector
 bitrix/components/bitrix/report.view/templates/.default/template.php
+
+//////  ДИСК //////
+        
+//добавить запись о файле в таблицу хранения 
+    $arFile = CFile::MakeFileArray($pathtofile);
+    $arFile['MODULE_ID'] = 'disk';
+    $fid = CFile::SaveFile($arFile, 'disk');
+    $fileIDs[] = $fid;
+//параметры для поиска хранилища в бд, таблица b_disk_storage
+        $dbDisk = \Bitrix\Disk\Storage::getList(array("filter"=>array("ENTITY_ID" => "shared_files_s1", "ENTITY_TYPE" => 'Bitrix\Disk\ProxyType\Common')));
+        if ($arDisk = $dbDisk->Fetch()) {
+        $storage = \Bitrix\Disk\Storage::loadById($arDisk["ID"]);
+        }
+ //получение папки и запись файла в нее   
+ $folder = Bitrix\Disk\SpecificFolder::getFolder($storage, "RESOURCE");
+ foreach($fileIDs as $k => $fileId) {
+        $fileArray = \CFile::getById($fileId)->fetch();
+       
+            $file = $folder->addFile(array(
+                'NAME' => $fileArray['FILE_NAME'],
+                'FILE_ID' => $fileId,
+                'CONTENT_PROVIDER' => null,
+                'SIZE' => $fileArray['FILE_SIZE'],
+                'CREATED_BY' => 1,
+                'UPDATE_TIME' => null,
+            ), array(), true);
+}
