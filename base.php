@@ -94,6 +94,9 @@ $user->Authorize($_POST['USER_ID'], false);
 $arGroups = \CUser::GetUserGroup(intval($_POST["USER_ID"]));
 $arGroups[] = intval(12);
 \CUser::SetUserGroup(intval($_POST['USER_ID']), $arGroups);
+$arPolicy = \CUser::GetGroupPolicy($_POST["USER_ID"]); //получить список требований к пароля исходя из групп пользователя
+$errors = \CUser::CheckPasswordAgainstPolicy($pass1, $arPolicy); // проверка на соответсвия пароля правилам безопасности 
+
 
 // ДОБАВЛЕНИЕ елемента инфоблока
 \CModule::IncludeModule("iblock");
