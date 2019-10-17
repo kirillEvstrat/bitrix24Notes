@@ -31,6 +31,9 @@ $fields = array(
         if(intval($res->SelectedRowsCount())>0) {
             $answer = $res->Fetch()['VALUE'];
         }
+///  FieldMulti (например phone)
+$rs = \CCrmFieldMulti::GetList(array(), array("ELEMENT_ID" => $entityID));
+
 /////////////////////////////
 //////// CRM end ////////////
 //////////////////////////////
@@ -129,6 +132,19 @@ $errors = \CUser::CheckPasswordAgainstPolicy($pass1, $arPolicy); // провер
 $rootActivity = $this->GetRootActivity();
 $documentId = $rootActivity->GetDocumentId();
 $rootActivity->SetVariable("test", print_r($documentId,true));       
+/// Запуск любого БП в срм (\bitrix\js\bizproc\starter.js - там вся обработка запуска);
+///  запуск через  js
+CJSCore::Init('bp_starter');
+var config = {
+	documentId : 'DEAL_<?=$dealId?>',
+	moduleId :'crm',
+	entity : 'CCrmDocumentDeal',
+	documentType : 'DEAL',
+	templateId : 97
+};
+BX.Bizproc.Starter.singleStart(config);
+
+
 
 //////Highload-блоками////////
 ////////////////////////////
