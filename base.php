@@ -33,7 +33,21 @@ $fields = array(
         }
 ///  FieldMulti (например phone)
 $rs = \CCrmFieldMulti::GetList(array(), array("ELEMENT_ID" => $entityID));
+// фиксация событий в истории
+$eventEntity = new \CCrmEvent();
+$res = $eventEntity->Add(
+                array(
+                    'USER_ID' => $arFields['MODIFY_BY_ID'],
+                    'ENTITY_ID' => $arFields['ID'],
+                    'ENTITY_TYPE' => \CCrmOwnerType::LeadName,
+                    'EVENT_TYPE' => \CCrmEvent::TYPE_CHANGE,
+                    'EVENT_NAME' => "Измененено поле 'Дата для отчёта'",
 
+                    'EVENT_TEXT_1' => $oldLead[self::REPORT_DATE],
+                    'EVENT_TEXT_2' => $arFields[self::REPORT_DATE]
+                ),
+                false
+);
 /////////////////////////////
 //////// CRM end ////////////
 //////////////////////////////
