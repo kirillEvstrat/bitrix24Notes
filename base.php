@@ -32,7 +32,10 @@ $fields = array(
             $answer = $res->Fetch()['VALUE'];
         }
 ///  FieldMulti (например phone)
-$rs = \CCrmFieldMulti::GetList(array(), array("ELEMENT_ID" => $entityID));
+$rs = \CCrmFieldMulti::GetList(array(), array('ENTITY_ID'  => 'CONTACT',
+                'ELEMENT_ID' => $Contact_ID,
+                'TYPE_ID'    => 'PHONE',
+                'VALUE_TYPE' => 'MOBILE',));
 // фиксация событий в истории
 $eventEntity = new \CCrmEvent();
 $res = $eventEntity->Add(
