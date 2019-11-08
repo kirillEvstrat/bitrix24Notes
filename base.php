@@ -1,4 +1,6 @@
 <?
+require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
+
 function writeToLog($data) {
         $log = "\n------------------------\n";
         $log .= print_r($data, 1);
@@ -134,6 +136,11 @@ $errors = \CUser::CheckPasswordAgainstPolicy($pass1, $arPolicy); // провер
             "ACTIVE"         => "Y",            // активен
         );
         $idOfEl = $el->Add($arLoadProductArray);
+//получение элемента и его свойства
+    $elements = \CIBlockElement::GetList(["ID"=>"DESC"], ["IBLOCK_ID" => $IBlockID], false, false, ["*", "UF_*"]);
+    $lastElementID = $elements->Fetch()['ID'];
+    $lastElementProp= \CIBlockElement::GetProperty($IBlockID, $lastElementID, [], ['ID'=>$PropertyID])->Fetch();
+
         
 //запуск бп
 \Bitrix\Main\Loader::includeModule('bizproc');
