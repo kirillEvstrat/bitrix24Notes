@@ -13,7 +13,8 @@ if ($ex = $APPLICATION->GetException())
 //////////////////////
 ////////////////////
 //Класс ContactCompanyTable
-$deal =  \CCrmDeal::GetListEx([],["ID"=>intval($dealId), "CHECK_PERMISSIONS"=>"N"],false,false,  ["*", "UF_*"])->Fetch();
+$companyIDs = \Bitrix\Crm\Binding\ContactCompanyTable::getContactCompanyIDs($contactID);
+$deal =  \CCrmDeal::GetListEx([],["ID"=>intval($dealId), "CHECK_PERMISSIONS"=>"N"],false,false,  ["*", "UF_*"])->Fetch();//список сделок
 //направления сделки
  $arResult['CATEGORIES'] = \Bitrix\Crm\Category\DealCategory::getAll(true); 
 /// обновление счета
