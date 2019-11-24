@@ -12,6 +12,12 @@ if ($ex = $APPLICATION->GetException())
 ///CRM start////////////////
 //////////////////////
 ////////////////////
+// категории сделок 
+$categories = \Bitrix\Crm\Category\DealCategory::getAll();
+    foreach ($categories as $category){
+        var_dump($category['ID']);
+        var_dump($category["NAME"]);
+    }
 //Класс ContactCompanyTable
 $companyIDs = \Bitrix\Crm\Binding\ContactCompanyTable::getContactCompanyIDs($contactID);
 $deal =  \CCrmDeal::GetListEx([],["ID"=>intval($dealId), "CHECK_PERMISSIONS"=>"N"],false,false,  ["*", "UF_*"])->Fetch();//список сделок
