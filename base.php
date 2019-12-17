@@ -12,6 +12,7 @@ if ($ex = $APPLICATION->GetException())
 ///CRM start////////////////
 //////////////////////
 ////////////////////
+$res = \CCrmStatus::GetList(array('SORT' => 'ASC'), ['ENTITY_ID'=> "SOURCE", "STATUS_ID"=>$lead['SOURCE_ID']]);// источники лида
 // категории сделок 
 $categories = \Bitrix\Crm\Category\DealCategory::getAll();
     foreach ($categories as $category){
