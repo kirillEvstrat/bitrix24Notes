@@ -148,7 +148,12 @@ $arManagers = \CIntranetUtils::GetDepartmentManager($user["UF_DEPARTMENT"], $use
         );
         $idOfEl = $el->Add($arLoadProductArray);
 //получение элемента и его свойства
-    $elements = \CIBlockElement::GetList(["ID"=>"DESC"], ["IBLOCK_ID" => $IBlockID], false, false, ["*", "UF_*"]);
+   $elements = \CIBlockElement::GetList(["ID"=>"DESC"], ["=IBLOCK_ID" => $IBlockID,  "=PROPERTY_ID_TOVARA" => $productID]);
+        while($element = $elements->GetNextElement()){
+            $arFields = $element->GetFields();
+       	    $arProps = $element->GetProperties();
+	}
+//или
     $lastElementID = $elements->Fetch()['ID'];
     $lastElementProp= \CIBlockElement::GetProperty($IBlockID, $lastElementID, [], ['ID'=>$PropertyID])->Fetch();
 
