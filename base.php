@@ -299,3 +299,9 @@ $obExport = new \CIBlockCMLExport;
             $obExport->EndExport();
             return true;
         }
+//
+module timemane
+//
+$TMUSER = new \CTimeManUser($userID);
+$userSettings = $TMUSER->GetSettings(); //настройки рабочего времени пользовател\
+$state = $TMUSER->State(); // состояние рабочего дня(открыт / закрыт)
