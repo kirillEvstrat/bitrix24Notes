@@ -160,14 +160,13 @@ $arManagers = \CIntranetUtils::GetDepartmentManager($user["UF_DEPARTMENT"], $use
         
 //запуск бп
 \Bitrix\Main\Loader::includeModule('bizproc');
-
-        $arErrorsTmp = array();
-        $wfId = \CBPDocument::StartWorkflow(
-            115,
-            [ 'lists', 'Bitrix\Lists\BizprocDocumentLists' , $idOfEl ],
-            [],
-            $arErrorsTmp
-        );
+$arErrorsTmp = array();
+$arWorkflowParameters[\CBPDocument::PARAM_TAGRET_USER] = "user_1";
+$arWorkflowParameters[\CBPDocument::PARAM_DOCUMENT_EVENT_TYPE] = \CBPDocumentEventType::Manual;
+$arWorkflowParameters['comment'] = $comment;
+$arWorkflowParameters['company_id'] = $company_id;				
+$wfId = \CBPDocument::StartWorkflow(75, array("crm", "CCrmDocumentContact", "CONTACT_" . $CONTACT_ID), $arWorkflowParameters, $arErrorsTmp);
+[ 'lists', 'Bitrix\Lists\BizprocDocumentLists' , $idOfEl ] // for infoblock
 //узнать парметры для запуска бп (запускать в самом бп)
 $rootActivity = $this->GetRootActivity();
 $documentId = $rootActivity->GetDocumentId();
