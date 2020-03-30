@@ -136,6 +136,9 @@ $departmentTree = \CIntranetUtils::getDeparmentsTree();
 foreach($departmentTree[147] as  $deaprtID){
 		$arManagers = \CIntranetUtils::GetDepartmentManagerID($deaprtID);
 }
+//информация по департаменту(название и т.д)
+$res = CIBlockSection::GetByID($deaprtID);
+if($ar_res = $res->GetNext())
 // ДОБАВЛЕНИЕ елемента инфоблока
 \CModule::IncludeModule("iblock");
 
