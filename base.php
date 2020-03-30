@@ -131,6 +131,11 @@ $arManagers = \CIntranetUtils::GetDepartmentManager($user["UF_DEPARTMENT"], $use
         foreach ($arManagers as $key => $arManager) {
             $managerID = $arManager['ID'];
         }
+//получить руководителей подразделений
+$departmentTree = \CIntranetUtils::getDeparmentsTree();
+foreach($departmentTree[147] as  $deaprtID){
+		$arManagers = \CIntranetUtils::GetDepartmentManagerID($deaprtID);
+}
 // ДОБАВЛЕНИЕ елемента инфоблока
 \CModule::IncludeModule("iblock");
 
