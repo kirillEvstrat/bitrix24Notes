@@ -61,6 +61,23 @@ $res = $eventEntity->Add(
                 ),
                 false
 );
+// коммент в живую ленту crm (в карточке справа которая)
+$entryID = \Bitrix\Crm\Timeline\CommentEntry::create(
+           array(
+               'TEXT' => "Создан <a href='https://".$_SERVER['SERVER_NAME']."/docs/shared/path/%D1%81%D1%87%D0%B5%D1%82%D0%B0/'>счет на услуги</a>",
+               'SETTINGS' => array('HAS_FILES' => 'Y'),
+               'AUTHOR_ID' => $USER->GetID(), //пользователь Рассписание замеров
+               'BINDINGS' => array(array('ENTITY_TYPE_ID' => \CCrmOwnerType::Deal, 'ENTITY_ID' => $dealID))
+           )
+       );
+
+       $saveData = array(
+           'ATTACHMENTS' => $PropFileArr['123'],
+           'COMMENT' => "gfdg",
+           'ENTITY_TYPE_ID' => \CCrmOwnerType::Deal,
+           'ENTITY_ID' => $dealID,
+       );
+       $item = \Bitrix\Crm\Timeline\CommentController::getInstance()->onCreate($entryID, $saveData);
 /////////////////////////////
 //////// CRM end ////////////
 //////////////////////////////
